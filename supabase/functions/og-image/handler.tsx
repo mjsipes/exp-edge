@@ -15,7 +15,7 @@ export default function handler(req: Request) {
           background: "blue",
         }}
       >
-        Hello babaa!
+        Hello babbaa!
       </div>
     )
   );
