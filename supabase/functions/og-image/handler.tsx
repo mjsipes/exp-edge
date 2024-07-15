@@ -12,10 +12,10 @@ export default function handler(req: Request) {
           alignItems: "center",
           justifyContent: "center",
           fontSize: 128,
-          background: "blue",
+          background: "red",
         }}
       >
-        Hello babbaa!
+        Hello babba!
       </div>
     )
   );
