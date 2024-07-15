@@ -15,7 +15,6 @@ enum DiscordCommandType {
 // For all requests to "/" endpoint, we want to invoke home() handler.
 serve({
   '/discord-bot': home,
-  '/discord-bot/motivation': motivation,
 })
 
 // The main logic of the Discord Slash Command is defined in this function.
@@ -62,114 +61,47 @@ async function home(request: Request) {
     )
     const query = value;
 
-    //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
-    const apiKey = "sk-proj-XBBgpwTUcldag3nixTCdT3BlbkFJh7XRuMoaL2Sn7Uq4e2RH"
-    const openai = new OpenAI({
-      apiKey: apiKey,
-    })
-    console.log('CHATGPT QUERY: ', query)
-    const content = `You are a comedic and friendly assistant who should talk like Donald Trump. 
-    You are super excited to talk about your 2024 campaign. 
-    Also, there is somone named Paul Klinger and everyonce in a while you mention how you met him once and you think he is weird.`
+    // //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
+    // const apiKey = "sk-proj-XBBgpwTUcldag3nixTCdT3BlbkFJh7XRuMoaL2Sn7Uq4e2RH"
+    // const openai = new OpenAI({
+    //   apiKey: apiKey,
+    // })
+    // console.log('CHATGPT QUERY: ', query)
+    // const content = `You are a comedic and friendly assistant who should talk like Donald Trump. 
+    // You are super excited to talk about your 2024 campaign. 
+    // Also, there is somone named Paul Klinger and everyonce in a while you mention how you met him once and you think he is weird.`
 
-    // const content = "you are a helpful chatbot"
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [
-        { 
-          role: 'system', 
-          content: content 
-        },
-        { 
-          role: 'user', 
-          content: query 
-        }
-      ],
-      model: 'gpt-4',
-      stream: false,
-    })
-    const reply = chatCompletion.choices[0].message.content
-    console.log('CHATGPT REPLY: ', reply)
-    //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
+    // // const content = "you are a helpful chatbot"
+    // const chatCompletion = await openai.chat.completions.create({
+    //   messages: [
+    //     { 
+    //       role: 'system', 
+    //       content: content 
+    //     },
+    //     { 
+    //       role: 'user', 
+    //       content: query 
+    //     }
+    //   ],
+    //   model: 'gpt-4',
+    //   stream: false,
+    // })
+    // const reply = chatCompletion.choices[0].message.content
+    // console.log('CHATGPT REPLY: ', reply)
+    // //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
 
     return json({
       // Type 4 responds with the below message retaining the user's
       // input at the top.
       type: 4,
       data: {
-        content: reply,
+        content: query,
       },
     })
   }
 
   // We will return a bad request error as a valid Discord request
   // shouldn't reach here.
-  return json({ error: 'bad request' }, { status: 400 })
-}
-
-async function motivation(request: Request) {
-  console.log('HTTP INPUT: ', request);
-  const { error } = await validateRequest(request, {
-    POST: {
-      headers: ['X-Signature-Ed25519', 'X-Signature-Timestamp'],
-    },
-  })
-  if (error) {
-    return json({ error: error.message }, { status: error.status })
-  }
-  const { valid, body } = await verifySignature(request)
-  if (!valid) {
-    return json(
-      { error: 'Invalid request' },
-      {
-        status: 401,
-      }
-    )
-  }
-  const { type = 0, data = { options: [] } } = JSON.parse(body)
-  if (type === DiscordCommandType.Ping) {
-    return json({
-      type: 1, // Type 1 in a response is a Pong interaction response type.
-    })
-  }
-  if (type === DiscordCommandType.ApplicationCommand) {
-    const { value } = data.options.find(
-      (option: { name: string; value: string }) => option.name === 'name'
-    )
-    const query = value;
-    //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
-    const apiKey = "sk-proj-XBBgpwTUcldag3nixTCdT3BlbkFJh7XRuMoaL2Sn7Uq4e2RH"
-    const openai = new OpenAI({
-      apiKey: apiKey,
-    })
-    console.log('CHATGPT QUERY: ', query)
-    const content = `respond saying "hello" only.`
-
-    // const content = "you are a helpful chatbot"
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [
-        { 
-          role: 'system', 
-          content: content 
-        },
-        { 
-          role: 'user', 
-          content: query 
-        }
-      ],
-      model: 'gpt-3.5-turbo',
-      stream: false,
-    })
-    const reply = chatCompletion.choices[0].message.content
-    console.log('CHATGPT REPLY: ', reply)
-    //CHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPTCHATGPT
-
-    return json({
-      type: 4,
-      data: {
-        content: reply,
-      },
-    })
-  }
   return json({ error: 'bad request' }, { status: 400 })
 }
 
