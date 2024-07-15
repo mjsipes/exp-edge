@@ -3,7 +3,7 @@ import { ImageResponse } from "og_edge";
 import { createClient } from "@supabase/supabase-js";
 
 const STORAGE_URL =
-  "https://bljghubhkofddfrezkhn.supabase.co/storage/v1/object/public/images/edgy-images/";
+  "https://umkaqxgnqgsvzngsgpeh.supabase.co/storage/v1/object/public/images/exp-edge-images/";
 
 export default async function handler(req: Request) {
   const url = new URL(req.url);
@@ -40,7 +40,7 @@ export default async function handler(req: Request) {
 
   const { data, error } = await supabaseAdminClient.storage
     .from("images")
-    .upload(`edgy-images/${name}.png`, generatedImage.body!, {
+    .upload(`exp-edge-images/${name}.png`, generatedImage.body!, {
       cacheControl: "3600",
       upsert: false,
     });
