@@ -100,6 +100,7 @@ async function home(request: Request) {
     })
   }
 
+  
   // We will return a bad request error as a valid Discord request
   // shouldn't reach here.
   return json({ error: 'bad request' }, { status: 400 })
